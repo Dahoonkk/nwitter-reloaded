@@ -46,10 +46,7 @@ export default function Layout() {
         const ok = confirm("Are you sure you want to log out?")
         if(ok) {
             await auth.signOut();
-            alert("로그아웃 완료!")
             navigate("/login")
-        } else {
-            alert("로그아웃 실패!")
         }
     }
     return (
