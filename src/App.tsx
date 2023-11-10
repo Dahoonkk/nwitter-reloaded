@@ -59,7 +59,7 @@ function App() {
   const init = async () => {
     // wait for firebase
     // setTimeout(() => setIsLoading(false), 1000); -> for test loading
-    // await auth.authStateReady();
+    await auth.authStateReady();
     setLoading(false);
   };
   useEffect(() => {
