@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+const FILE_SIZE_MAX_LIMIT = 1 * 1024 * 1024;
+
 const Form = styled.form`
     display: flex;
     flex-direction: column;
@@ -86,16 +88,18 @@ export default function PostTweetForm() {
                 username: user.displayName || "Anonymous",
                 userId: user.uid,
             })
-            if(file) {
+            if(file && file.size <= FILE_SIZE_MAX_LIMIT) {  // file size check
                 const locationRef = ref(storage, `tweets/${user.uid}-${user.displayName}/${doc.id}/`);
                 const result = await uploadBytes(locationRef, file);
                 const url = await getDownloadURL(result.ref);
                 await updateDoc(doc, {
                     photo: url
                 });
+            } else {
+                // alert("File Size is too big💢💢")
             }
             setTweet("");
-            setFile(null);
+            setFile(null); 
         } catch (e) {
             console.log(e);
         } finally {
